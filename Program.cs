@@ -19,9 +19,40 @@ HttpUtils httpUtils = HttpUtils.instance;
 // We start by registering and getting the first task
 Response startRespons = await httpUtils.Get(baseURL + startEndpoint + myPersonalID);
 Console.WriteLine($"Start:\n{Colors.Magenta}{startRespons}{ANSICodes.Reset}\n\n"); // Print the response from the server to the console
-string taskID = ""; // We get the taskID from the previous response and use it to get the task (look at the console output to find the taskID)
+string taskID = "otYK2"; // We get the taskID from the previous response and use it to get the task (look at the console output to find the taskID)
 
 //#### FIRST TASK 
 // Fetch the details of the task from the server.
 Response task1Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
-Console.WriteLine(task1Response);
+Task task1 = JsonSerializer.Deserialize<Task>(task1Response.content);
+Console.WriteLine($"TASK: {ANSICodes.Effects.Bold}{task1?.title}{ANSICodes.Reset}\n{task1?.description}\nParameters: {Colors.Yellow}{task1?.parameters}{ANSICodes.Reset}");
+
+//Answer
+
+List<string> allWords = new List<string>();
+List<string> uniqueWords = new List<string>();
+foreach (string item in task1.parameters.Split(","))
+{
+    allWords.Add(item);
+}
+foreach (string word in allWords)
+{
+    if (!uniqueWords.Contains(word))
+    {
+        uniqueWords.Add(word);
+    }
+}
+uniqueWords.Sort();
+string result = string.Join(", ", uniqueWords);
+Console.WriteLine($"Result: {Colors.Green}{result}{ANSICodes.Reset}");
+
+
+
+class Task
+{
+    public string? title { get; set; }
+    public string? description { get; set; }
+    public string? taskID { get; set; }
+    public string? usierID { get; set; }
+    public string? parameters { get; set; }
+}
