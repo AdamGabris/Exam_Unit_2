@@ -111,7 +111,26 @@ Response task3Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonal
 Task task3 = JsonSerializer.Deserialize<Task>(task3Response.content);
 Console.WriteLine($"TASK: {ANSICodes.Effects.Bold}{task3?.title}{ANSICodes.Reset}\n{task3?.description}\nParameters: {Colors.Yellow}{task3?.parameters}{ANSICodes.Reset}");
 
+int SumOfAllIntegers(string input)
+{
+    int sum = 0;
+    foreach (string item in input.Split(","))
+    {
+        sum += int.Parse(item);
+    }
+    return sum;
+}
 
+string answer3 = SumOfAllIntegers(task3.parameters).ToString();
+Console.WriteLine($"Answer: {Colors.Green}{answer3}{ANSICodes.Reset}");
+
+// Sending answer to Task 3 back to server
+
+Response task3AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer3.ToString());
+Console.WriteLine($"Answer: {Colors.Green}{task3AnswerResponse}{ANSICodes.Reset}");
+
+
+//#### FOURTH TASK
 
 class Task
 {
