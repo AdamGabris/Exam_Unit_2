@@ -132,6 +132,36 @@ Console.WriteLine($"Answer: {Colors.Green}{task3AnswerResponse}{ANSICodes.Reset}
 
 //#### FOURTH TASK
 
+taskID = "aLp96";
+
+Console.WriteLine("\n-----------------------------------\n");
+
+Response task4Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
+Task task4 = JsonSerializer.Deserialize<Task>(task4Response.content);
+Console.WriteLine($"TASK: {ANSICodes.Effects.Bold}{task4?.title}{ANSICodes.Reset}\n{task4?.description}\nParameters: {Colors.Yellow}{task4?.parameters}{ANSICodes.Reset}");
+
+string OddOrEven(int number)
+{
+    if (number % 2 == 0)
+    {
+        return "even";
+    }
+    else
+    {
+        return "odd";
+    }
+}
+
+
+string answer4 = OddOrEven(int.Parse(task4.parameters)).ToString();
+Console.WriteLine($"Answer: {Colors.Green}{answer4}{ANSICodes.Reset}");
+
+// Sending answer to Task 4 back to server
+
+Response task4AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer4.ToString());
+Console.WriteLine($"Answer: {Colors.Green}{task4AnswerResponse}{ANSICodes.Reset}");
+
+
 class Task
 {
     public string? title { get; set; }
