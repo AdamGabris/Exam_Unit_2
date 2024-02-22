@@ -43,8 +43,73 @@ foreach (string word in allWords)
     }
 }
 uniqueWords.Sort();
-string result = string.Join(", ", uniqueWords);
-Console.WriteLine($"Result: {Colors.Green}{result}{ANSICodes.Reset}");
+string answer1 = string.Join(",", uniqueWords);
+Console.WriteLine($"Answer: {Colors.Green}{answer1}{ANSICodes.Reset}");
+
+// Sending answer to Task 1 back to server
+
+Response task1AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer1.ToString());
+Console.WriteLine($"Answer: {Colors.Green}{task1AnswerResponse}{ANSICodes.Reset}");
+
+//#### SECOND TASK
+
+taskID = "rEu25ZX";
+
+Console.WriteLine("\n-----------------------------------\n");
+
+Response task2Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
+Task task2 = JsonSerializer.Deserialize<Task>(task2Response.content);
+Console.WriteLine($"TASK: {ANSICodes.Effects.Bold}{task2?.title}{ANSICodes.Reset}\n{task2?.description}\nParameters: {Colors.Yellow}{task2?.parameters}{ANSICodes.Reset}");
+
+//Answer
+
+Dictionary<char, int> romanToInteger = new Dictionary<char, int>()
+{
+    {'I', 1},
+    {'V', 5},
+    {'X', 10},
+    {'L', 50},
+    {'C', 100},
+    {'D', 500},
+    {'M', 1000}
+};
+
+int ConvertRomanToInt(string roman)
+{
+    int result = 0;
+    for (int i = 0; i < roman.Length; i++)
+    {
+        if (i + 1 < roman.Length && romanToInteger[roman[i]] < romanToInteger[roman[i + 1]])
+        {
+            result -= romanToInteger[roman[i]];
+        }
+        else
+        {
+            result += romanToInteger[roman[i]];
+        }
+    }
+    return result;
+
+
+}
+
+string answer2 = ConvertRomanToInt(task2.parameters).ToString();
+Console.WriteLine($"Answer: {Colors.Green}{answer2}{ANSICodes.Reset}");
+
+// Sending answer to Task 2 back to server
+
+Response task2AnswerResponse = await httpUtils.Post(baseURL + taskEndpoint + myPersonalID + "/" + taskID, answer2.ToString());
+Console.WriteLine($"Answer: {Colors.Green}{task2AnswerResponse}{ANSICodes.Reset}");
+
+//#### THIRD TASK
+
+taskID = "psu31_4";
+
+Console.WriteLine("\n-----------------------------------\n");
+
+Response task3Response = await httpUtils.Get(baseURL + taskEndpoint + myPersonalID + "/" + taskID); // Get the task from the server
+Task task3 = JsonSerializer.Deserialize<Task>(task3Response.content);
+Console.WriteLine($"TASK: {ANSICodes.Effects.Bold}{task3?.title}{ANSICodes.Reset}\n{task3?.description}\nParameters: {Colors.Yellow}{task3?.parameters}{ANSICodes.Reset}");
 
 
 
