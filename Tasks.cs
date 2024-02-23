@@ -7,17 +7,17 @@ public class TaskProcessor
     {
         List<string> uniqueWords = new List<string>();
         string[] allWords = parameters.Split(",");
-        
+
         for (int i = 0; i < allWords.Length; i++)
         {
             string word = allWords[i];
-            
+
             if (!uniqueWords.Contains(word))
             {
                 uniqueWords.Add(word);
             }
         }
-        
+
         uniqueWords.Sort();
         return string.Join(",", uniqueWords);
     }
@@ -74,7 +74,16 @@ public class TaskProcessor
         {
             return "odd";
         }
+    }
+
+
 }
 
-
+class Task
+{
+    public string? title { get; set; }
+    public string? description { get; set; }
+    public string? taskID { get; set; }
+    public string? usierID { get; set; }
+    public string? parameters { get; set; }
 }
